@@ -5,9 +5,7 @@ import java.util.Set;
 
 public class Banque {
   private HashMap<Integer, Compte> comptes = new HashMap<>();
-  private double taux = 0.01;
   private int numDernierCompte = 0;
-
 
   public int creerCompte(boolean estEtranger) {
     int numCompte = numDernierCompte++;
@@ -22,16 +20,12 @@ public class Banque {
 
   public void crediter(int numCompte, int montant) {
     Compte compte = comptes.get(numCompte);
-    int solde = compte.getSolde();
-    int nouveauSolde = solde + montant;
-    compte.setSolde(nouveauSolde);
+    compte.crediter(montant);
   }
 
   public void appliquerInterets() {
     for (Compte compte : comptes.values()) {
-      int solde = compte.getSolde();
-      int nouveauSolde = (int) (solde * (1 + taux));
-      compte.setSolde(nouveauSolde);
+      compte.appliquerInterets();
     }
   }
 
