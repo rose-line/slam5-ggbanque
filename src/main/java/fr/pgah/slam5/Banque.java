@@ -4,12 +4,21 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Banque {
-  private HashMap<Integer, Compte> comptes = new HashMap<>();
+  private HashMap<Integer, Compte> comptes;
   private int numDernierCompte = 0;
 
-  public int creerCompte(boolean estEtranger) {
+  public Banque(HashMap<Integer, Compte> comptes) {
+    this.comptes = comptes;
+  }
+
+  public int creerCompte(boolean estEtranger, int type) {
     int numCompte = numDernierCompte++;
-    Compte nouveau = new Compte(estEtranger);
+    Compte nouveau;
+    if (type == 1) {
+      nouveau = new CompteEpargne(numCompte, estEtranger);
+    } else {
+      nouveau = new CompteCourant(numCompte, estEtranger);
+    }
     comptes.put(numCompte, nouveau);
     return numCompte;
   }
@@ -32,23 +41,15 @@ public class Banque {
   public String toString() {
     Set<Integer> numerosDesComptes = comptes.keySet();
     String res = "La banque gère " + numerosDesComptes.size() + " comptes.";
-    String provenance;
     for (int num : numerosDesComptes) {
-      if (comptes.get(num).getEstEtranger()) {
-        provenance = "étranger";
-      } else {
-        provenance = "non-étranger";
-      }
-      res += "\n\tCompte " + num
-          + ": solde = " + comptes.get(num).getSolde()
-          + " (" + provenance + ")";
+      res += comptes.get(num).toString();
     }
     return res;
   }
 
   public boolean autoriserEmprunt(int numCompte, int montant) {
-    int solde = comptes.get(numCompte).getSolde();
-    return (solde >= montant / 2);
+    Compte compte = comptes.get(numCompte);
+    return compte.offreGarantiesSuffisantesPour(montant);
   }
 
 }

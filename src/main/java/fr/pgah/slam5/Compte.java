@@ -1,11 +1,12 @@
 package fr.pgah.slam5;
 
 public class Compte {
-  private int solde;
-  private boolean estEtranger;
-  private double taux = 0.01;
+  protected int numero;
+  protected int solde;
+  protected boolean estEtranger;
 
-  public Compte(boolean estEtranger) {
+  public Compte(int num, boolean estEtranger) {
+    this.numero = num;
     this.estEtranger = estEtranger;
   }
 
@@ -22,6 +23,13 @@ public class Compte {
   }
 
   public void appliquerInterets() {
-    solde = (int) (solde * (1 + taux));
+  }
+
+  // public String toString() {
+  // return "";
+  // }
+
+  public boolean offreGarantiesSuffisantesPour(int montant) {
+    return false;
   }
 }
